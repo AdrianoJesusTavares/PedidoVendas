@@ -1,0 +1,83 @@
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">#{cadastroCliente.editando ? 'EDICAO DE CLIENTE' : 'CADASTRO DE NOVO CLIENTE'}</ui:define>
+
+	<ui:define name="corpo">
+		<f:metadata>
+			<o:viewParam name="cliente" value="#{cadastroCliente.cliente}" />		
+		</f:metadata>
+		
+		<h:form id="cadastroCliente">
+			<h1>#{cadastroCliente.editando ? 'EDICAO DE CLIENTE' : 'CADASTRO DE NOVO CLIENTE'}</h1>
+
+			<p:messages id="msg" autoUpdate="true" />
+
+			<p:toolbar style="margin-top:20px" id="toobar">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/cliente/CadastroCliente" />
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{cadastroCliente.salvar()}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar"  outcome="/cliente/PesquisaCliente"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+				<p:panelGrid columns="2" id="painel" style="width:100%; margin-top:20px" columnClasses="rotulo,campo">
+				<h:panelGroup>
+					<p:outputLabel value="Id Cliente" rendered="#{cadastroCliente.editando==true}"/>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:outputText value="#{cadastroCliente.cliente.id}" rendered="#{cadastroCliente.editando==true}"/>
+				</h:panelGroup>
+				
+				<p:outputLabel value="TIPO PESSOA" />
+				<p:selectOneRadio value="#{cadastroCliente.cliente.tipo}" id="radio">
+					<f:selectItems value="#{cadastroCliente.tipoPessoa}" var="pessoa"
+						itemValue="#{pessoa}" itemLabel="#{pessoa}"/>
+				 <p:ajax  listener="#{cadastroCliente.Rendered()}" update="docreceita lb lbnome " /> 		
+				</p:selectOneRadio>
+ 
+				<p:outputLabel id="lb" value="#{cadastroCliente.status ? 'CPF' : 'CNPJ'}" for="#{cadastroCliente.status ? 'cpf' : 'cnpj'}"/>		
+				
+				<h:panelGroup id="docreceita">
+				<p:inputMask mask="999.999.999-99" id="cpf" size="25" rendered="#{cadastroCliente.status==true}" value="#{cadastroCliente.cliente.documentoReceitaFederal}"/>
+			    <p:inputMask mask="99.999.999/9999-99" id="cnpj" size="25" rendered="#{cadastroCliente.status==false}" value="#{cadastroCliente.cliente.documentoReceitaFederal}" />
+				</h:panelGroup>
+				
+				<p:outputLabel value="#{cadastroCliente.status ? 'NOME' : 'RAZAO SOCIAL'}" for="nome" id="lbnome" />
+				<h:panelGroup>
+				
+				<p:inputText size="60" id="nome" value="#{cadastroCliente.cliente.nome}" />
+				<p:outputLabel value="FONE FIXO" style="margin-left: 25px"  />
+				<p:inputMask  mask="(999) 9999-9999" size="25" id="fonefixo" style="margin-left: 10px" value="#{cadastroCliente.cliente.telefoneFixo}"/>
+				</h:panelGroup>
+				
+				
+				<p:outputLabel value="EMAIL" for="email"  />
+				<h:panelGroup>
+				<p:inputText size="60" id="email" value="#{cadastroCliente.cliente.email}"/>
+				
+				<p:outputLabel value="CELULAR" style="margin-left: 25px" />
+				<p:inputMask  mask="(999) 9999-9999" size="25" id="celular" style="margin-left: 20px" 
+				value="#{cadastroCliente.cliente.celular}"/>
+				</h:panelGroup>
+					
+			</p:panelGrid>
+					<p:tabView style="margin-top:10px">
+					<p:tab title="Endereco">
+						<ui:include
+						src="/WEB-INF/template/cliente/Endereco.xhtml" />
+					</p:tab>
+				</p:tabView>	
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

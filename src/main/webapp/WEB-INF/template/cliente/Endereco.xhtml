@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="4" style="width:100%"
+		columnClasses="rotulo,campo,rotulo,campo">
+
+		
+		<p:outputLabel value="Logradouro" for="logradouro" />
+		<p:inputText id="logradouro" value="#{cadastroCliente.endereco.logradouro}" size="60" />
+		
+		<p:outputLabel value="Numero" for="numeroEntrega" />
+		<p:inputText size="20" id="numeroEntrega" value="#{cadastroCliente.endereco.numero}" />
+		
+		<p:outputLabel value="Complemento" for="complemento" />
+		<p:inputText size="60" id="complemento" value="#{cadastroCliente.endereco.complemento}" />
+		
+		<p:outputLabel value="Cidade" for="cidade" />
+		<p:inputText size="40" id="cidade" value="#{cadastroCliente.endereco.cidade}"  />
+		
+		<p:outputLabel value="Estado" />
+		<p:selectOneMenu value="#{cadastroCliente.endereco.uf}">
+		<f:selectItems  value="#{cadastroCliente.estados}" var="estado"
+		itemLabel="#{estado}" itemValue="#{estado}"/>
+		
+		</p:selectOneMenu>
+		
+		<p:outputLabel value="Cep" for="cep" />
+		<p:inputMask mask="99999-999" size="40" id="cep" value="#{cadastroCliente.endereco.cep}"/>
+
+	</p:panelGrid>
+
+
+</ui:composition>

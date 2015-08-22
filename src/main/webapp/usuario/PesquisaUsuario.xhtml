@@ -1,0 +1,88 @@
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa de Usuario</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+			<h1>Pesquisa de Usuario</h1>
+			<p:messages id="msg" autoUpdate="true"/>
+			<p:toolbar style="margin-top:10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" id="botaoPesquisa"
+						action="#{pesquisaUsuarioBean.pesquisar()}" update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/usuario/CadastroUsuario" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width:100%; margin-top:10px" columnClasses="rotulo,campo">
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText size="60" id="nome" value="#{pesquisaUsuarioBean.usuario.nome}" />
+	<!-- 
+				<p:outputLabel value="Grupo Usuario" for="grupousuario" />				
+				<p:selectManyCheckbox id="grupousuario" value="#{pesquisaUsuarioBean.listagrupo}" >
+					<f:selectItems value="#{pesquisaUsuarioBean.lista()}" var="grupos"
+					itemValue="#{grupos.nome}" itemLabel="#{grupos.descricao}"/>
+				</p:selectManyCheckbox>
+
+ -->
+			</p:panelGrid>
+			<p:dataTable id="usuariosTable" value="#{pesquisaUsuarioBean.usuariosFiltrados}" var="usuario"
+				rows="10" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" style="margin-top:10px">
+				
+				<p:column style="width:100px; text-align:center" headerText="ID">
+					<h:outputText value="#{usuario.id}" />
+				</p:column>
+
+				<p:column headerText="NOME">
+					<h:outputText value="#{usuario.nome}" />
+				</p:column>
+
+				<p:column headerText="E-MAIL">
+					<h:outputText
+						value="#{usuario.email}" />
+				</p:column>
+
+				<p:column headerText="GRUPOS">
+					<h:outputText value="#{usuario.grupos.size()}" />
+				</p:column>
+
+				
+				<p:column style="width:100px; text-align:center">
+					<p:button icon="ui-icon-pencil" title="Editar" outcome="/usuario/CadastroUsuario">
+						<f:param name="usuario" value="#{usuario.id}" />
+					</p:button>
+
+					
+					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+	    				<f:setPropertyActionListener target="#{pesquisaUsuarioBean.usuarioSelecionado}" value="#{usuario}" />
+	    			</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog header="Exclusão de produto"
+				message="Tem certeza que deseja excluir o Usuario #{pesquisaUsuarioBean.usuarioSelecionado.nome}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+
+				<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+					action="#{pesquisaUsuarioBean.excluir}" process="@this" update=":frmPesquisa:usuariosTable" />
+				<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+			</p:confirmDialog>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

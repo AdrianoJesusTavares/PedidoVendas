@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:dataTable var="cheques" value="#{lancamentoChequeBean.listaCheques()}" id="lista_cheques"
+		style="margin-top:5px; width:100%; " emptyMessage="nenhum cheque cadastrado ainda">
+		
+		<p:column style="width:200px">
+			<f:facet name="header">CLIENTE</f:facet>
+			<h:outputText value="#{cheques.cliente.nome}" />
+		</p:column>
+		
+		<p:column style="width:200px">
+			<f:facet name="header">CHEQUE</f:facet>
+			<h:outputText value="#{cheques.nomeCheque}" />
+		</p:column>
+		<p:column>
+			<f:facet name="header">BANCO</f:facet>
+			<h:outputText value="#{cheques.bancoEmissor}" />
+		</p:column>
+
+		<p:column style="width:90px">
+			<f:facet name="header"> ENTRADA</f:facet>
+			<h:panelGroup>
+				<h:outputText value="#{cheques.dataEntradaCheque}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</h:panelGroup>
+		</p:column>
+
+		<p:column style="width:90px">
+			<f:facet name="header">VENCIM</f:facet>
+			<h:panelGroup>
+				<h:outputText value="#{cheques.dataVencimentoChque}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</h:panelGroup>
+		</p:column>
+		<p:column style="width:40px">
+			<f:facet name="header">DIAS</f:facet>
+			<h:outputText value="#{cheques.diasCheque}" />
+		</p:column>
+		<p:column style="text-align:right">
+			<f:facet name="header">VL BRUTO</f:facet>
+
+			<h:outputText value="#{cheques.valor}">
+				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
+			</h:outputText>
+		</p:column>
+	 
+	
+		<p:column style="text-align:right" id="juros" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+			<f:facet name="header">JUROS</f:facet>
+			<h:outputText value="#{cheques.juros}">
+				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
+			</h:outputText>
+		</p:column>
+	
+	
+
+		<p:column  id="vliquido" style="text-align:right" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+			<f:facet name="header">VL LIQUIDO</f:facet>
+			<h:outputText value="#{cheques.valorLiquido}">
+				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
+			</h:outputText>
+		</p:column>
+
+		
+		<p:column style="width:40px">
+			<p:commandButton icon="ui-icon-trash" title="Excluir"
+				oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+				update=":frm:menu:confirmacaoExclusaoDialog">
+				<f:setPropertyActionListener target="#{lancamentoChequeBean.cheque}"
+					value="#{cheques}" />
+			</p:commandButton>
+		</p:column>
+
+		<p:columnGroup type="footer">
+			<p:row>
+				<p:column colspan="6" style="text-align:right" footerText="TOTAIS:" />
+
+				<p:column>
+					<f:facet name="footer">
+						<h:outputText value="#{lancamentoChequeBean.valorBruto}">
+							<f:convertNumber type="currency" locale="pt_BR" />
+						</h:outputText>
+					</f:facet>
+				</p:column>
+				
+		
+				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+					<f:facet name="footer">
+						<h:outputText value="#{lancamentoChequeBean.valorJuros}">
+							<f:convertNumber type="currency" locale="pt_BR" />
+						</h:outputText>
+					</f:facet>
+				</p:column>
+			
+				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+					<f:facet name="footer">
+						<h:outputText value="#{lancamentoChequeBean.valorLiquido}">
+							<f:convertNumber type="currency" locale="pt_BR" />
+						</h:outputText>
+					</f:facet>
+				</p:column>
+		
+			
+			</p:row>
+		</p:columnGroup>
+
+	</p:dataTable>
+
+	<p:confirmDialog header="Exclusão de cheque" message="Tem certeza que deseja excluir o cheque"
+		widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+
+		<p:commandButton value="Sim"
+			oncomplete="PF('confirmacaoExclusao').hide();"
+			action="#{lancamentoChequeBean.excluirCheque()}" process="@this" update="frm:menu:lista_cheques" />
+		<p:button value="Não"
+			onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	</p:confirmDialog>
+
+</ui:composition>

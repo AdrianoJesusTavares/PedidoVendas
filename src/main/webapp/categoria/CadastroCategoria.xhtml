@@ -1,0 +1,39 @@
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Cadastro de Categoria</ui:define>
+
+	<ui:define name="corpo">
+	
+		<h:form>
+			<h1>Cadastro de Categoria</h1>
+
+			<p:messages id="msg" autoUpdate="true" />
+
+			<p:toolbar style="margin-top:20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/categoria/CadastroCategoria" />
+					
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroCategoriaBean.salvar()}" update="@form" />
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right"> 
+				<p:button value="Sub Categoria" outcome="/categoria/CadastroSubCategoria" />
+				<p:button value="Pesquisar" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			   <p:panelGrid columns="2" id="painel" style="width:100%; margin-top:20px" columnClasses="rotulo,campo">
+				<p:outputLabel value="Categoria Pai" for="categoriaPai" />
+				<p:inputText size="60" id="categoriaPai" value="#{cadastroCategoriaBean.categoria.descricao}" />
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

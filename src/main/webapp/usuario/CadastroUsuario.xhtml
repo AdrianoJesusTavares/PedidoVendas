@@ -1,0 +1,55 @@
+<ui:composition template="/WEB-INF/template/layout-padrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">#{cadastroUsuarioBean.editando?'EDICAO DE USUARIO':'CADASTRO DE USUARIO'}</ui:define>
+
+	<ui:define name="corpo">
+			<f:metadata>
+			<o:viewParam name="usuario" value="#{cadastroUsuarioBean.usuario}"/>
+		</f:metadata>
+		
+		<h:form>
+		<h1>#{cadastroUsuarioBean.editando?'EDICAO DE USUARIO':'CADASTRO DE USUARIO'}</h1>
+		
+			<p:messages id="msg" autoUpdate="true"/>
+		
+			<p:toolbar style="margin-top:20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuario/CadastroUsuario" />
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroUsuarioBean.salvar()}" update="@form"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" outcome="/usuario/PesquisaUsuario"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel" style="width:100%; margin-top:20px" columnClasses="rotulo,campo">
+				
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText size="60" id="nome" value="#{cadastroUsuarioBean.usuario.nome}" />
+
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText size="60" id="email" value="#{cadastroUsuarioBean.usuario.email}" />
+
+
+				<p:outputLabel value="Grupo Usuario" for="grupousuario" />				
+				<p:selectManyCheckbox id="grupousuario" value="#{cadastroUsuarioBean.listagrupo}" >
+					<f:selectItems value="#{cadastroUsuarioBean.lista()}" var="grupos"
+					itemValue="#{grupos.nome}" itemLabel="#{grupos.descricao}"/>
+				</p:selectManyCheckbox>
+				
+				<p:outputLabel value="Senha" for="senha" />
+				<p:password id="senha" size="20" value="#{cadastroUsuarioBean.usuario.senha}"/>
+
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
