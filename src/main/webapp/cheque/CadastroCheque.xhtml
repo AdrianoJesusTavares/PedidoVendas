@@ -5,6 +5,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
+	<f:metadata>
+		
+		<f:event listener="#{cadastroChequeBean.inicializar()}" type="preRenderView" />
+	</f:metadata>
+
 	<ui:define name="titulo">cheques</ui:define>
 
 	<ui:define name="corpo">

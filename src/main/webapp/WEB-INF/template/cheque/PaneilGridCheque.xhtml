@@ -4,54 +4,26 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:panelGrid columns="4" style="margin-top:3px; width:100%;"
-		columnClasses="rotulo, campo, rotulo, campo">
+	<p:panelGrid columns="2" style="margin-top:3px; width:100%;" columnClasses="rotulo, campo, rotulo, campo">
 
 		<p:outputLabel value="CLIENTE:" />
 		<h:panelGroup>
-			<p:selectOneMenu id="menu" value="#{lancamentoChequeBean.cheque.cliente}">
-				<f:selectItems var="cliente" value="#{lancamentoChequeBean.cliente}" itemValue="#{cliente}" itemLabel="#{cliente.nome}" />
-				<h:message showDetail="true" showSummary="true" for="menu" />
+			<p:selectOneMenu  id="menu" value="#{cadastroChequeBean.decontador}" >
+				<f:selectItems var="cliente" value="#{cadastroChequeBean.cliente}" itemValue="#{cliente}" itemLabel="#{cliente.nome}" />
+					<p:ajax event="change" process="@this"/>
 			</p:selectOneMenu>
-		</h:panelGroup>
-
-		<p:outputLabel value="EMITIDO:" />
-		<h:panelGroup>
-			<p:inputText size="50" value="#{lancamentoChequeBean.cheque.nomeCheque}" />
-
-			<p:outputLabel value="N. CHEQUE" style="margin-left:10px" />
-			<p:inputText size="30" value="#{lancamentoChequeBean.cheque.numCheque}" style="margin-left:10px" />
-		</h:panelGroup>
-
-		<p:outputLabel for="entradacheque" value="ENTRADA:" />
-		<p:calendar id="entradacheque" required="true" value="#{lancamentoChequeBean.cheque.dataEntradaCheque}"
-			pattern="dd/MM/yyyy" validator="validaDia" />
-
-		<p:outputLabel for="vencimentocheque" value="VENCIMENTO:" />
-		
-		<h:panelGroup >
-			<p:calendar id="vencimentocheque" required="true" value="#{lancamentoChequeBean.cheque.dataVencimentoChque}"
-				pattern="dd/MM/yyyy" validator="validaDia" />
-
-		 		<p:selectOneRadio  style="float: right; margin-right: 130px" value="#{lancamentoChequeBean.cheque.tipoDesconto}">
-					<f:selectItems value="#{lancamentoChequeBean.tipoDesconto}" var="desconto"
+	
+	 		<p:selectOneRadio  style="float: right; margin-left:50px" value="#{cadastroChequeBean.cheque.tipoDesconto}">
+					<f:selectItems value="#{cadastroChequeBean.tipoDesconto}" var="desconto"
 						itemValue="#{desconto}" itemLabel="#{desconto.descricao}"/>
-				 <p:ajax  listener="#{lancamentoChequeBean.rendered()}"  update="lista_cheques" /> 		
+				 <p:ajax  listener="#{cadastroChequeBean.rendered()}"  update="lista_cheques" /> 		
 				</p:selectOneRadio>
 
+				<p:outputLabel value="Taxa de Juros" style="margin-left:50px"/>
+			<p:inputText size="20" value="#{cadastroChequeBean.taxaJuros}" style="margin-left:10px">
+			<p:ajax event="change" process="@this"/>
+			</p:inputText>	
 		</h:panelGroup>
-
-		<p:outputLabel value="BANCO:" />
-		<p:inputText size="20" value="#{lancamentoChequeBean.cheque.bancoEmissor}" />
-
-		<p:outputLabel value="VALOR:" />
-			<h:panelGroup>
-			<p:inputText size="20" value="#{lancamentoChequeBean.cheque.valor}" styleClass="moeda">
-				<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
-			</p:inputText>
-			<p:outputLabel value="Taxa de Juros" style="margin-left:180px"/>
-			<p:inputText size="20" value="#{lancamentoChequeBean.taxaJuros}" style="margin-left:10px"/>	
-			</h:panelGroup>
 
 	</p:panelGrid>
 </ui:composition>

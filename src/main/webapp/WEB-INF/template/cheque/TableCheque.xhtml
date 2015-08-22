@@ -3,26 +3,29 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	
-	<p:dataTable var="cheques" value="#{lancamentoChequeBean.listaCheques()}" id="lista_cheques"
-		style="margin-top:5px; width:100%; " emptyMessage="nenhum cheque cadastrado ainda">
-		
-		<p:column style="width:200px">
-			<f:facet name="header">CLIENTE</f:facet>
-			<h:outputText value="#{cheques.cliente.nome}" />
-		</p:column>
-		
-		<p:column style="width:200px">
-			<f:facet name="header">CHEQUE</f:facet>
+
+	<p:dataTable var="cheques" value="#{cadastroChequeBean.listaCheques()}" id="lista_cheques" rowIndexVar="linha"
+	 style="margin-top:5px; width:100%; " emptyMessage="nenhum cheque cadastrado ainda">
+
+
+		<p:column style="width:230px" headerText="CHEQUE">
+			<p:inputText size="34" value="#{cadastroChequeBean.nomeCheque}" rendered="#{linha==0}" style="margin-left:-8px"/>
+
 			<h:outputText value="#{cheques.nomeCheque}" />
 		</p:column>
-		<p:column>
-			<f:facet name="header">BANCO</f:facet>
+
+		<p:column headerText="BANCO" style="width:130px">
+			<p:inputText size="17" value="#{cadastroChequeBean.banco}" rendered="#{linha==0}" style="margin-left:-8px"/>
+			
 			<h:outputText value="#{cheques.bancoEmissor}" />
 		</p:column>
 
-		<p:column style="width:90px">
-			<f:facet name="header"> ENTRADA</f:facet>
+
+		<p:column style="width:90px" headerText="ENTRADA">
+			<p:calendar id="entradacheque" required="true" value="#{cadastroChequeBean.dataEntrada}" size="11"
+			pattern="dd/MM/yyyy" validator="validaDia" rendered="#{linha==0}" style="margin-left:-8px" >
+			</p:calendar>
+
 			<h:panelGroup>
 				<h:outputText value="#{cheques.dataEntradaCheque}">
 					<f:convertDateTime pattern="dd/MM/yyyy" />
@@ -30,49 +33,64 @@
 			</h:panelGroup>
 		</p:column>
 
-		<p:column style="width:90px">
-			<f:facet name="header">VENCIM</f:facet>
+		<p:column style="width:90px" headerText="VENCIM">
+			<p:calendar id="vencimentocheque" required="true" value="#{cadastroChequeBean.dataVencimento}" size="11"
+			 pattern="dd/MM/yyyy" validator="validaDia" rendered="#{linha==0}" style="margin-left:-8px">
+			</p:calendar>
+			
 			<h:panelGroup>
 				<h:outputText value="#{cheques.dataVencimentoChque}">
 					<f:convertDateTime pattern="dd/MM/yyyy" />
 				</h:outputText>
 			</h:panelGroup>
 		</p:column>
-		<p:column style="width:40px">
-			<f:facet name="header">DIAS</f:facet>
+
+		<p:column style="width:42px" headerText="N.CHQ">
+			<p:inputText size="3" value="#{cadastroChequeBean.numcheque}" rendered="#{linha==0}" style="margin-left:-8px"/>
+
+			<h:outputText value="#{cheques.numCheque}" />
+		</p:column>
+
+		<p:column style="width:40px" headerText="DIAS">
 			<h:outputText value="#{cheques.diasCheque}" />
 		</p:column>
-		<p:column style="text-align:right">
-			<f:facet name="header">VL BRUTO</f:facet>
 
-			<h:outputText value="#{cheques.valor}">
+		<p:column style="text-align:right; width:73px" headerText="VALOR">
+			<p:inputText  styleClass="moeda" size="8" value="#{cadastroChequeBean.valor}" rendered="#{linha==0}" style="margin-left:-8px">
+				<f:convertNumber maxFractionDigits="2" minFractionDigits="2"  />
+				<p:ajax event="change" process="@all" listener="#{cadastroChequeBean.cadastrar()}"
+					update=":frm:menu:lista_cheques :frm:menu:observacao" />
+			</p:inputText>
+
+			<h:outputText value="#{cheques.valor}" rendered="#{linha!=0}">
 				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
 			</h:outputText>
 		</p:column>
-	 
-	
-		<p:column style="text-align:right" id="juros" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+		<p:column style="text-align:right" id="juros"
+			rendered="#{cadastroChequeBean.descontoCheque==true}">
 			<f:facet name="header">JUROS</f:facet>
 			<h:outputText value="#{cheques.juros}">
 				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
 			</h:outputText>
 		</p:column>
-	
-	
 
-		<p:column  id="vliquido" style="text-align:right" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+
+
+
+		<p:column id="vliquido" style="text-align:right"
+			rendered="#{cadastroChequeBean.descontoCheque==true}">
 			<f:facet name="header">VL LIQUIDO</f:facet>
 			<h:outputText value="#{cheques.valorLiquido}">
 				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
 			</h:outputText>
 		</p:column>
 
-		
+
 		<p:column style="width:40px">
 			<p:commandButton icon="ui-icon-trash" title="Excluir"
-				oncomplete="PF('confirmacaoExclusao').show()" process="@this"
-				update=":frm:menu:confirmacaoExclusaoDialog">
-				<f:setPropertyActionListener target="#{lancamentoChequeBean.cheque}"
+				oncomplete="PF('confirmacaoExclusao').show()" process="@this" rendered="#{linha!=0}"
+				update=":frm:menu:confirmacaoExclusaoDialog" >
+				<f:setPropertyActionListener target="#{cadastroChequeBean.cheque}"
 					value="#{cheques}" />
 			</p:commandButton>
 		</p:column>
@@ -83,41 +101,46 @@
 
 				<p:column>
 					<f:facet name="footer">
-						<h:outputText value="#{lancamentoChequeBean.valorBruto}">
+						<h:outputText value="#{cadastroChequeBean.valorBruto}">
 							<f:convertNumber type="currency" locale="pt_BR" />
 						</h:outputText>
 					</f:facet>
 				</p:column>
-				
-		
-				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+
+
+				<p:column rendered="#{cadastroChequeBean.descontoCheque==true}">
 					<f:facet name="footer">
-						<h:outputText value="#{lancamentoChequeBean.valorJuros}">
+						<h:outputText value="#{cadastroChequeBean.valorJuros}">
 							<f:convertNumber type="currency" locale="pt_BR" />
 						</h:outputText>
 					</f:facet>
 				</p:column>
-			
-				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+
+				<p:column rendered="#{cadastroChequeBean.descontoCheque==true}">
 					<f:facet name="footer">
-						<h:outputText value="#{lancamentoChequeBean.valorLiquido}">
+						<h:outputText value="#{cadastroChequeBean.valorLiquido}">
 							<f:convertNumber type="currency" locale="pt_BR" />
 						</h:outputText>
 					</f:facet>
 				</p:column>
-		
-			
+				<p:column>
+					<f:facet name="footer">
+					</f:facet>
+				</p:column>
+
 			</p:row>
 		</p:columnGroup>
 
 	</p:dataTable>
 
-	<p:confirmDialog header="Exclusão de cheque" message="Tem certeza que deseja excluir o cheque"
+	<p:confirmDialog header="Exclusão de cheque"
+		message="Tem certeza que deseja excluir o cheque"
 		widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
 
 		<p:commandButton value="Sim"
 			oncomplete="PF('confirmacaoExclusao').hide();"
-			action="#{lancamentoChequeBean.excluirCheque()}" process="@this" update="frm:menu:lista_cheques" />
+			action="#{cadastroChequeBean.excluirCheque()}" process="@this"
+			update="frm:menu:lista_cheques" />
 		<p:button value="Não"
 			onclick="PF('confirmacaoExclusao').hide(); return false;" />
 	</p:confirmDialog>

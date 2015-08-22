@@ -6,7 +6,7 @@ import gyn.jesus.NegocioException;
 import gyn.jesus.filtros.ChequeFilter;
 import gyn.jesus.model.Cheque;
 
-import java.io.Serializable;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,27 +21,12 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 
-public class Cheques implements Serializable {
+public class Cheques extends RepositoryGenerico<Long, Cheque> {
 	
 
 	private static final long serialVersionUID = 1L;
 	@Inject
 	EntityManager manager;
-
-
-	 
-	/* public List<Pessoa> getListaPessoa(){
-		 
-		 @SuppressWarnings("unchecked")
-		 List<Pessoa> lista = session.createCriteria(Pessoa.class).list();
-		// this.session.close();
-		 return lista; 
-	 }*/
-	 
-	 public void salvarCheques(Cheque cheque){
-		
-	this.manager.merge(cheque);
-	 }
 	 
 	 public List<Cheque> listaCheques(){
 		 return this.manager.createQuery("from Cheque", Cheque.class).getResultList();

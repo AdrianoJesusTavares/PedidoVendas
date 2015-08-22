@@ -38,7 +38,7 @@ public class ServicoLista implements Serializable {
     public void salvarCliente(Cliente cliente){
     	this.clientes.guardar(cliente);
     	
-    //	this.clienteDao.salvarCliente(pessoa);
+    
     }
 	public  Cliente getPessoa(String nome){
 		
@@ -72,7 +72,7 @@ public class ServicoLista implements Serializable {
 	public void salvarCheques(List<Cheque> cheques){
 		
 		for(Cheque cheque : cheques){
-			this.cheques.salvarCheques(cheque);
+			this.cheques.salvar(cheque);
 		}
 		
 	}

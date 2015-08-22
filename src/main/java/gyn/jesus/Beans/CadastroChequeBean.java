@@ -116,11 +116,7 @@ public class CadastroChequeBean implements Serializable{
 		return this.valor!=0;
 	}
 	
-	public void imprimirData(){
-		System.out.println(this.dataEntrada);
-		System.out.println(this.dataVencimento);
-	}
-	
+
 	public List<Cheque> listaCheques(){
 		return this.listacheques;
 	}
