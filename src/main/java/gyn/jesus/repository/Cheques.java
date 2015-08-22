@@ -1,18 +1,10 @@
 package gyn.jesus.repository;
 
-
-
 import gyn.jesus.NegocioException;
 import gyn.jesus.filtros.ChequeFilter;
 import gyn.jesus.model.Cheque;
-
-
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -25,14 +17,8 @@ public class Cheques extends RepositoryGenerico<Long, Cheque> {
 	
 
 	private static final long serialVersionUID = 1L;
-	@Inject
-	EntityManager manager;
-	 
-	 public List<Cheque> listaCheques(){
-		 return this.manager.createQuery("from Cheque", Cheque.class).getResultList();
-		
-		 
-	 }
+	
+
 	 
 		@SuppressWarnings("unchecked")
 		public List<Cheque> filtrados(ChequeFilter filtro) {
@@ -61,10 +47,9 @@ public class Cheques extends RepositoryGenerico<Long, Cheque> {
 		public void remover(Cheque cheque) {
 			try{
 				cheque = this.porId(cheque.getId());
-				manager.remove(cheque);
+				super.delete(cheque);
 				manager.flush();
 				}catch(PersistenceException e){
-					//e.printStackTrace();
 					throw new NegocioException("Este cheque nao pode ser excluido" );
 					
 				}

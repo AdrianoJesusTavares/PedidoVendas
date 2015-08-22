@@ -20,9 +20,7 @@ public class CadastroClienteService implements Serializable {
 	@Transactional
 	public Cliente salvar(Cliente cliente) {
 		
-
-		
-		return this.clientes.guardar(cliente);
+		return this.clientes.salvar(cliente);
 	
 	}
 

@@ -38,7 +38,7 @@ public class EmissaoPedidoService  implements Serializable{
 		
 		pedido.setStatusPedido(StatusPedido.EMITIDO);
 		
-		pedido = this.pedidos.guardar(pedido);
+		pedido = this.pedidos.salvar(pedido);
 		
 		return pedido;
 		

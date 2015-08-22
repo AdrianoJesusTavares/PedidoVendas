@@ -4,12 +4,8 @@ package gyn.jesus.service;
 
 import gyn.jesus.anotations.Transactional;
 import gyn.jesus.model.Cheque;
-import gyn.jesus.model.Cliente;
 import gyn.jesus.repository.Cheques;
-import gyn.jesus.repository.Clientes;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,35 +17,11 @@ public class ServicoLista implements Serializable {
 
 	double total;
 	
-	@Inject
-	private Clientes clientes;
+
 
 	@Inject
 	private Cheques cheques;
     
-    List<Cliente> lista = new ArrayList<Cliente>();
-	
-    public  List<Cliente> listarPessoas(){
-		lista = clientes.clientes();
-		
-		return lista;
-	}
-	
-    public void salvarCliente(Cliente cliente){
-    	this.clientes.guardar(cliente);
-    	
-    
-    }
-	public  Cliente getPessoa(String nome){
-		
-		for(Cliente cliente: lista){
-			if(nome.equalsIgnoreCase(cliente.getNome())){
-				return cliente;
-			}
-		}
-		
-		return null;
-	}
 	
 	public int calcularData(Date dataEntrada, Date dataVencimento){
 		
@@ -76,10 +48,7 @@ public class ServicoLista implements Serializable {
 		}
 		
 	}
-	public List<Cheque> listaCheques(){
-		return this.cheques.listaCheques();
-	}
-	
+
 	public double calulaValorLiquido(List<Cheque> lista){
 		double valorLiquido=0;
 		for(Cheque cheque : lista){

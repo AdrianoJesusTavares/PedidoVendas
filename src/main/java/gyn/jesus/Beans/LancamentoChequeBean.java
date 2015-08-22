@@ -52,7 +52,7 @@ public class LancamentoChequeBean implements Serializable{
 	}
 	
 	public List<Cliente> getCliente(){
-		this.cliente = this.clientes.clientes();
+	//	this.cliente = this.clientes.clientes();
 		
 		return this.cliente; 
 	}

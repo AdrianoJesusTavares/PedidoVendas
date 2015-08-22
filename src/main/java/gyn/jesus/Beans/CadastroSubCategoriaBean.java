@@ -33,10 +33,15 @@ public class CadastroSubCategoriaBean implements Serializable {
 	}
 
 	public void salvarSubcategoria(){
+		
 		this.subCategoria.setCategoriaPai(this.categoriaPai);
+		
 		this.categorias.salvar(this.subCategoria);
+		
 		FacesUtil.addInfoMessage("Sub Categoria " + this.subCategoria.getDescricao() + " Cadastrada com sucesso");
+		
 		this.limpar();
+		
 		this.categoriasRaizes = this.categorias.listar();
 	}
 

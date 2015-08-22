@@ -2,19 +2,15 @@ package gyn.jesus.repository;
 
 
 import gyn.jesus.model.Grupo;
-import java.io.Serializable;
 import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 
-public class Grupos implements Serializable {
+public class Grupos extends RepositoryGenerico<Long, Grupo>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private EntityManager manager;
+
 	
 	public Grupo porId(Long id) {
 		return this.manager.find(Grupo.class, id);
@@ -26,8 +22,6 @@ public class Grupos implements Serializable {
 		
 		return this.manager.createQuery("from Grupo", Grupo.class).getResultList();
 	}
-
-
 
 	public Grupo porNome(String nome) {
 		try {

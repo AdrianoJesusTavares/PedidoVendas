@@ -5,17 +5,13 @@ import gyn.jesus.model.DataValor;
 import gyn.jesus.model.Pedido;
 import gyn.jesus.model.Usuario;
 
-import java.io.Serializable;
+
 import java.util.List;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
@@ -28,12 +24,10 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
-public class Pedidos implements Serializable {
+public class Pedidos extends RepositoryGenerico<Long, Pedido> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private EntityManager manager;
 
 	@SuppressWarnings({ "unchecked" })
 	public Map<Date, BigDecimal> valoresTotaisPorData(Integer numeroDeDias, Usuario criadoPor) {
@@ -49,9 +43,6 @@ public class Pedidos implements Serializable {
 		
 		Criteria criteria = session.createCriteria(Pedido.class);
 		
-		// select date(data_criacao) as data, sum(valor_total) as valor 
-		// from pedido where data_criacao >= :dataInicial and vendedor_id = :criadoPor 
-		// group by date(data_criacao)
 		
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.sqlGroupProjection("date(data_criacao) as data", 
@@ -134,10 +125,7 @@ public class Pedidos implements Serializable {
 		return criteria.addOrder(Order.asc("id")).list();
 	}
 
-	public Pedido guardar(Pedido pedido) {
 
-		return this.manager.merge(pedido);
-	}
 
 	public Pedido porId(Long id) {
 		

@@ -1,28 +1,16 @@
 package gyn.jesus.repository;
 
-import gyn.jesus.anotations.Transactional;
 import gyn.jesus.model.Categoria;
 
-import java.io.Serializable;
+
 import java.util.List;
 
-
-
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-
-public class Categorias implements Serializable {
+public class Categorias extends RepositoryGenerico<Long, Categoria> {
 
 
 	private static final long serialVersionUID = 1L;
-	@Inject
-	private EntityManager manager;
 	
-	@Transactional
-	public void salvar(Categoria categoria){
-		this.manager.merge(categoria);
-	}
+
 	
 	public Categoria porId(Long id){
 		return manager.find(Categoria.class, id);

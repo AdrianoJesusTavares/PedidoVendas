@@ -39,7 +39,7 @@ public class CadastroPedidoService implements Serializable {
 			throw new NegocioException("Valor total do pedido não pode ser negativo.");
 		}
 		
-		pedido = this.pedidos.guardar(pedido);
+		pedido = this.pedidos.salvar(pedido);
 		return pedido;
 	}
 	

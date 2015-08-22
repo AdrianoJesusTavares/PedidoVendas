@@ -6,13 +6,9 @@ import gyn.jesus.model.Cliente;
 
 
 
-import java.io.Serializable;
+
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -21,13 +17,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 
-public class Clientes implements Serializable {
+public class Clientes extends RepositoryGenerico<Long, Cliente> {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private EntityManager manager;
-	
+
 	public Cliente porId(Long id) {
 		return this.manager.find(Cliente.class, id);
 	}
@@ -40,15 +34,10 @@ public class Clientes implements Serializable {
 	}
 	
 	
-	public Cliente guardar(Cliente cliente){
-	
-		return this.manager.merge(cliente);
-		
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Cliente> filtrados(ClienteFilter cliente) {
-		Session session = manager.unwrap(Session.class);
+		Session session = this.manager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(Cliente.class);
 
 		if (StringUtils.isNotBlank(cliente.getDocumentoReceitaFederal())) {
@@ -65,10 +54,9 @@ public class Clientes implements Serializable {
 	public void remover(Cliente cliente){
 		try{
 		cliente = this.porId(cliente.getId());
-		manager.remove(cliente);
-		manager.flush();
+		super.delete(cliente);
+		this.manager.flush();
 		}catch(PersistenceException e){
-			//e.printStackTrace();
 			throw new NegocioException("Este cliente nao pode ser excluido" );
 			
 		}
@@ -77,7 +65,7 @@ public class Clientes implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<Cliente> clientes() {
 		
-		Session session = manager.unwrap(Session.class);
+		Session session = this.manager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(Cliente.class);
 		
 		 return criteria.addOrder(Order.asc("nome")).list();
