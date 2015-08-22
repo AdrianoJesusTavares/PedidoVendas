@@ -6,12 +6,13 @@ import gyn.jesus.model.CalcularDesconto;
 import gyn.jesus.model.Cliente;
 import gyn.jesus.model.Cheque;
 import gyn.jesus.repository.Clientes;
-import gyn.jesus.service.ServicoLista;
+import gyn.jesus.service.ChequeService;
 import gyn.jesus.util.FacesUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 
@@ -39,7 +40,7 @@ public class LancamentoChequeBean implements Serializable{
 	private List<Cliente> cliente;
 	
 	@Inject
-	private ServicoLista servico;
+	private ChequeService servico;
 	
 	@Inject
 	private Clientes clientes;
@@ -52,7 +53,7 @@ public class LancamentoChequeBean implements Serializable{
 	}
 	
 	public List<Cliente> getCliente(){
-	//	this.cliente = this.clientes.clientes();
+		this.cliente = this.clientes.clientes();
 		
 		return this.cliente; 
 	}
@@ -69,7 +70,7 @@ public class LancamentoChequeBean implements Serializable{
 	
 		this.cheque.setDiasCheque(this.servico.calcularData(this.cheque.getDataEntradaCheque(), this.cheque.getDataVencimentoChque()));
 		this.cheque.setJuros(this.servico.calculaJuros(this.getTaxaJuros(), this.cheque.getValor(), this.cheque.getDiasCheque()));
-		this.cheque.setValorLiquido(this.servico.calulaValorLiquido(this.cheque.getValor(), this.cheque.getJuros()));
+		this.cheque.setValorLiquido(this.servico.calculaValorLiquido(this.cheque.getValor(), this.cheque.getJuros()));
 		this.setValorBruto(this.cheque.getValor());
 		this.setValorJuros(this.cheque.getJuros());
 		this.setValorLiquido(this.cheque.getValorLiquido());

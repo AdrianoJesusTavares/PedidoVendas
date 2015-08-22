@@ -28,10 +28,10 @@
 				<h:panelGroup>
 				<p:inputText size="60"  value="#{pesquisaChequeBean.filtro.nomeCliente}"/>
 				
-				<p:selectOneRadio  style="float: right; margin-left: 50px; " value="#{lancamentoChequeBean.cheque.tipoDesconto}">
-					<f:selectItems value="#{lancamentoChequeBean.tipoDesconto}" var="desconto"
+				<p:selectOneRadio  style="float: right; margin-left: 50px; " value="#{cadastroChequeBean.cheque.tipoDesconto}">
+					<f:selectItems value="#{cadastroChequeBean.tipoDesconto}" var="desconto"
 						itemValue="#{desconto}" itemLabel="#{desconto.descricao}"/>
-				 <p:ajax  listener="#{lancamentoChequeBean.rendered()}"  update="lista_cheques" /> 		
+				 <p:ajax  listener="#{cadastroChequeBean.rendered()}"  update="lista_cheques" /> 		
 				</p:selectOneRadio>
 				</h:panelGroup>
 				
@@ -90,14 +90,14 @@
 					</h:outputText>
 				</p:column>
 
-		<p:column style="text-align:right; width:60px" id="juros" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+		<p:column style="text-align:right; width:60px" id="juros" rendered="#{cadastroChequeBean.descontoCheque==true}">
 			<f:facet name="header">JUROS</f:facet>
 			<h:outputText value="#{cheques.juros}">
 				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
 			</h:outputText>
 		</p:column>
 	
-		<p:column  id="vliquido" style="text-align:right; width:70px" rendered="#{lancamentoChequeBean.descontoCheque==true}">
+		<p:column  id="vliquido" style="text-align:right; width:70px" rendered="#{cadastroChequeBean.descontoCheque==true}">
 			<f:facet name="header">VL LIQUIDO</f:facet>
 			<h:outputText value="#{cheques.valorLiquido}">
 				<f:convertNumber locale="pt_BR" type="currency" currencySymbol="R$" />
@@ -127,8 +127,10 @@
 								</h:outputText>
 							</f:facet>
 						</p:column>
+						<p:column>
+						</p:column>
 
-				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+				<p:column  rendered="#{cadastroChequeBean.descontoCheque==true}">
 					<f:facet name="footer">
 						<h:outputText value="#{pesquisaChequeBean.juros}">
 							<f:convertNumber type="currency" locale="pt_BR" />
@@ -136,7 +138,7 @@
 					</f:facet>
 				</p:column>
 			
-				<p:column  rendered="#{lancamentoChequeBean.descontoCheque==true}">
+				<p:column  rendered="#{cadastroChequeBean.descontoCheque==true}">
 					<f:facet name="footer">
 						<h:outputText value="#{pesquisaChequeBean.vliquido}">
 							<f:convertNumber type="currency" locale="pt_BR" />

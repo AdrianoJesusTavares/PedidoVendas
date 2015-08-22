@@ -5,11 +5,9 @@ import gyn.jesus.filtros.UsuarioFilter;
 import gyn.jesus.model.Grupo;
 import gyn.jesus.model.Usuario;
 
-import java.io.Serializable;
+
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -20,12 +18,11 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-public class Usuarios implements Serializable {
+public class Usuarios extends RepositoryGenerico<Long, Usuario>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private EntityManager manager;
+	
 	
 	public Usuario porId(Long id) {
 		return this.manager.find(Usuario.class, id);
@@ -54,14 +51,12 @@ public class Usuarios implements Serializable {
 	}
 	
 	
-	public Usuario guardar(Usuario usuario){
-		return this.manager.merge(usuario);
-	}
+
 	
 	public void remover(Usuario usuario){
 		try{
 		usuario = this.porId(usuario.getId());
-		manager.remove(usuario);
+		super.delete(usuario);
 		manager.flush();
 		}catch(PersistenceException e){
 		//	e.printStackTrace();

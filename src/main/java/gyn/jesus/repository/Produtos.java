@@ -5,11 +5,9 @@ import gyn.jesus.anotations.Transactional;
 import gyn.jesus.filtros.ProdutoFilter;
 import gyn.jesus.model.Produto;
 
-import java.io.Serializable;
+
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
@@ -20,22 +18,16 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-public class Produtos implements Serializable {
+public class Produtos extends RepositoryGenerico<Long, Produto> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	EntityManager manager;
 
-	public Produto guardar(Produto produto) {
-
-		return this.manager.merge(produto);
-	}
 
 	public void remover(Produto produto){
 		try{
 		produto = this.porId(produto.getId());
-		manager.remove(produto);
+		super.delete(produto);
 		manager.flush();
 		}catch(PersistenceException e){
 			

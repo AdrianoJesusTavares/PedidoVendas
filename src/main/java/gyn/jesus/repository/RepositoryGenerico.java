@@ -3,7 +3,6 @@ package gyn.jesus.repository;
 import gyn.jesus.anotations.Transactional;
 
 
-import gyn.jesus.model.Categoria;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;

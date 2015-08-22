@@ -1,12 +1,13 @@
 package gyn.jesus.Beans;
 
 import gyn.jesus.filtros.ChequeFilter;
+import gyn.jesus.model.CalcularDesconto;
 import gyn.jesus.model.Cheque;
 import gyn.jesus.repository.Cheques;
 
 
 
-import gyn.jesus.service.ServicoLista;
+import gyn.jesus.service.ChequeService;
 import gyn.jesus.util.FacesUtil;
 
 import java.io.Serializable;
@@ -31,12 +32,12 @@ public class PesquisaChequeBean implements Serializable {
 	private Cheques cheques;
 	
 	@Inject
-	private ServicoLista chequeService;
-	
+	private ChequeService chequeService;
+	private boolean descontoCheque = false;
 	private double total;
 	private double juros;
 	private double vliquido;
-	
+	private Cheque cheque;
 	private Cheque chequeSelecionado;
 	
 	private ChequeFilter filtro;
@@ -118,5 +119,35 @@ public class PesquisaChequeBean implements Serializable {
 		this.chequeSelecionado = chequeSelecionado;
 	}
 	
+	public void rendered() {
+
+		if (CalcularDesconto.CALCULOSIMPLES.equals(this.cheque.getTipoDesconto())) {
+			this.descontoCheque = false;
+		} else {
+			this.descontoCheque = true;
+		}
+
+	}
+
+	public CalcularDesconto[] getTipoDesconto() {
+		return CalcularDesconto.values();
+	}
+
+	public boolean isDescontoCheque() {
+		return descontoCheque;
+	}
+
+	public void setDescontoCheque(boolean descontoCheque) {
+		this.descontoCheque = descontoCheque;
+	}
+
+	public Cheque getCheque() {
+		return cheque;
+	}
+
+	public void setCheque(Cheque cheque) {
+		this.cheque = cheque;
+	}
+
 	
 }

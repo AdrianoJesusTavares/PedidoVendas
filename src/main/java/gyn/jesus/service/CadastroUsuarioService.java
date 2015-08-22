@@ -22,12 +22,7 @@ public class CadastroUsuarioService implements Serializable {
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		
-//	Produto produtoExistente = produtos.porSku(produto.getSku());
-//		if (produtoExistente != null && !produtoExistente.equals(produto)) {
-	//		throw new NegocioException("Já existe um produto com o SKU informado.");
-	//	}
-		
-		return usuarios.guardar(usuario);
+		return usuarios.salvar(usuario);
 	}
 
 	public List<Usuario> pesquisa(UsuarioFilter filtro){

@@ -11,13 +11,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ServicoLista implements Serializable {
+public class ChequeService implements Serializable {
  
 	private static final long serialVersionUID = 1L;
 
 	double total;
-	
-
 
 	@Inject
 	private Cheques cheques;
@@ -25,19 +23,17 @@ public class ServicoLista implements Serializable {
 	
 	public int calcularData(Date dataEntrada, Date dataVencimento){
 		
-		int diasCheque = (int)Math.round(( (dataVencimento.getTime() - dataEntrada.getTime()) / (1000 * 60 * 60 * 24) ));
-		return diasCheque;
+		return (int)Math.round(( (dataVencimento.getTime() - dataEntrada.getTime()) / (1000 * 60 * 60 * 24) ));
 		
 	}
 	
 	public double calculaJuros(double taxaJuro , double valorBruto, int dias){
 		
-		double juro=(((valorBruto*taxaJuro)/100)/30)*(dias+2);
-		return juro;
+		return (((valorBruto*taxaJuro)/100)/30)*(dias+2);
+		
 	}
-	public double calulaValorLiquido(double valorBruto, double juro){
-		double valorLiquido=valorBruto-juro;
-		return valorLiquido;
+	public double calculaValorLiquido(double valorBruto, double juro){
+		return valorBruto-juro;
 	}
 	
 	@Transactional
@@ -49,22 +45,6 @@ public class ServicoLista implements Serializable {
 		
 	}
 
-	public double calulaValorLiquido(List<Cheque> lista){
-		double valorLiquido=0;
-		for(Cheque cheque : lista){
-			valorLiquido +=cheque.getValorLiquido();
-		}
-		return valorLiquido;
-	}
-
-	public double calulaValorJuros(List<Cheque> lista){
-		double juros=0;
-		for(Cheque cheque : lista){
-			juros +=cheque.getJuros();
-		}
-		return juros;
-	}
-	
 	public double calulaValorBruto(List<Cheque> lista){
 		double vlBruto=0;
 		for(Cheque cheque : lista){

@@ -32,7 +32,7 @@ public class CadastroProdutoService implements Serializable {
 			throw new NegocioException("Já existe um produto com o SKU informado.");
 		}
 		
-		return produtos.guardar(produto);
+		return produtos.salvar(produto);
 	}
 
 	public List<Produto> pesquisa(ProdutoFilter filtro){
